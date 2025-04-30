@@ -1,5 +1,4 @@
-import { integer, serial, timestamp, varchar, pgTable, primaryKey,  } from "drizzle-orm/pg-core";
-import {relations} from "drizzle-orm"
+import { integer, serial, timestamp, varchar, pgTable, numeric, boolean, date, unique, index } from "drizzle-orm/pg-core";
 
 const timestamps = {
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -15,16 +14,34 @@ export const usersTable = pgTable("users", {
 })
 
 export const categoriesTable = pgTable("categories", {
-    user_id: integer("user_id").notNull().references(() => usersTable.id),
-    name: varchar("name", { length: 255 }).notNull(),
-    description: varchar("description", { length: 255 }).notNull(),
-    ...timestamps
-})
-
-export const coisaTable = pgTable("coisas", {
     id: serial("id").primaryKey(),
-    user_id: integer("user_id").notNull().references(() => usersTable.id),
-    category_id: integer("category_id").notNull().references(() => categoriesTable.id),
+    userId: integer("user_id").references(() => usersTable.id, { onDelete: "cascade", onUpdate: "cascade" }),
     name: varchar("name", { length: 255 }).notNull(),
-    value: 
-})
+    ...timestamps
+}, (table) => [
+    unique().on(table.userId, table.name),
+    index().on(table.userId)
+])
+
+export const entriesTable = pgTable("entries", {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade", onUpdate: "cascade" }),
+    categoryId: integer("category_id").notNull().references(() => categoriesTable.id, { onDelete: "cascade", onUpdate: "cascade" }),
+    name: varchar("name", { length: 255 }).notNull(),
+    value: numeric("value",  { precision: 10, scale: 2}).notNull(), // Até 10 dígitos, [-99999999.99, 99999999,99]
+    isRecurring: boolean("is_recurring").default(false).notNull(),
+    date: date("date", {mode: "date"}).notNull(), // Usar também como início da recorrência
+    recurringEndDate: date("recurring_end_date", { mode: "date" }),
+    ...timestamps
+}, (table) => [
+    index().on(table.userId)
+])
+
+export type INewUser = typeof usersTable.$inferInsert
+export type IUser = typeof usersTable.$inferSelect;
+
+export type INewCategory = typeof categoriesTable.$inferInsert;
+export type ICategory = typeof categoriesTable.$inferSelect;
+
+export type INewEntry = typeof entriesTable.$inferInsert;
+export type Entry = typeof entriesTable.$inferSelect;
