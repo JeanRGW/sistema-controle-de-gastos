@@ -9,6 +9,7 @@ import {
   date,
   unique,
   index,
+  text,
 } from 'drizzle-orm/pg-core';
 
 const timestamps = {
@@ -23,7 +24,7 @@ export const usersTable = pgTable('users', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }).notNull().unique(),
-  password: varchar('password', { length: 255 }).notNull(),
+  password: varchar('passwordHash', { length: 255 }).notNull(),
   ...timestamps,
 });
 
