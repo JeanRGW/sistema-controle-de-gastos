@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import AppError from '@/lib/errors/AppError';
 import routeErrorHandler from '@/lib/errors/routeErrorHandler';
-import db from '@/lib/db';
+import db from '@/db';
 
 const createSessionModel = z.object({
   password: z.string().min(1),
