@@ -1,21 +1,24 @@
 import { ZodError } from 'zod';
 import AppError from './AppError';
+import { NextResponse } from 'next/server';
 
-export default async function routeErrorHandler(e: unknown): Promise<Response> {
+export default async function routeErrorHandler(
+  e: unknown
+): Promise<NextResponse> {
   if (e instanceof ZodError) {
-    return new Response(JSON.stringify(e.issues), {
+    return NextResponse.json(e.issues, {
       status: 400,
     });
   }
 
   if (e instanceof AppError) {
-    return new Response(JSON.stringify(e.msg), {
-      status: e.status,
+    return NextResponse.json(e.message, {
+      status: e.code,
     });
   }
 
   console.error(e);
-  return new Response('Internal server error.', {
+  return NextResponse.json('Internal server error.', {
     status: 500,
   });
 }

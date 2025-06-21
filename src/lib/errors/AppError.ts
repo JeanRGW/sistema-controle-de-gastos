@@ -1,9 +1,8 @@
-export default class AppError {
-  public readonly msg: string;
-  public readonly status: number;
+export default class AppError extends Error {
+  code: number;
 
-  constructor(msg: string, status: number = 400) {
-    this.msg = msg;
-    this.status = status;
+  constructor(message = 'An error ocourred.', code = 400) {
+    super(message);
+    this.code = code;
   }
 }
