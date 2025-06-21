@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import db from '@/lib/db';
 import AppError from '@/lib/errors/AppError';
@@ -29,7 +29,7 @@ export const POST = async (req: NextRequest): Promise<Response> => {
 
     return new Response(JSON.stringify(user));
   } catch (e) {
-    console.log(e);
+    console.error(e);
 
     return routeErrorHandler(e);
   }
