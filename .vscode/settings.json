@@ -1,4 +1,5 @@
 {
+<<<<<<< Updated upstream
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "[javascript]": {
