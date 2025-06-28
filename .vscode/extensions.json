@@ -1,3 +1,8 @@
 {
+<<<<<<< Updated upstream
   "recommendations": ["esbenp.prettier-vscode"]
 }
+=======
+    "recommendations": ["esbenp.prettier-vscode"]
+}
+>>>>>>> Stashed changes
