@@ -17,8 +17,6 @@ export const NewEntrySchema = z.object({
   categoryId: z.coerce.number().int(),
   date: dateFromString,
   name: z.string().max(255),
-  isRecurring: z.coerce.boolean().optional(),
-  recurringEndDate: dateFromString.optional(),
 });
 export type ValidatedNewEntry = z.infer<typeof NewEntrySchema>;
 

@@ -7,7 +7,6 @@ import {
   varchar,
   pgTable,
   numeric,
-  boolean,
   date,
   index,
 } from 'drizzle-orm/pg-core';
@@ -82,9 +81,7 @@ export const entriesTable = pgTable(
       }),
     name: varchar('name', { length: 255 }).notNull(),
     value: numeric('value', { precision: 10, scale: 2 }).notNull(), // Até 10 dígitos, [-99999999.99, 99999999,99]
-    isRecurring: boolean('is_recurring').default(false).notNull(),
     date: date('date', { mode: 'date' }).notNull(), // Usar também como início da recorrência
-    recurringEndDate: date('recurring_end_date', { mode: 'date' }),
     ...timestamps,
   },
   (table) => [index().on(table.userId), index().on(table.categoryId)]
